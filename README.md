@@ -1,15 +1,29 @@
 # Mozart Go — Native iOS App
 
-A native iOS companion app for [Mozart](https://mozart.la) built with Swift 5.9+ and SwiftUI.
+A modern, scalable iOS workspace application inspired by [Mozart](https://mozart.la), built with Swift 5.9+ and SwiftUI.
+
+The app demonstrates a production-ready architecture with clean separation of concerns, dependency injection, offline-first capabilities, and a fully mockable API layer—allowing development and testing without backend dependency.
 
 ## Features
 
-- **Landing** — Branded entry screen with Sign In / Sign Up flows
-- **Auth** — Email/password login and registration; JWT stored in Keychain; Google OAuth scaffolded
-- **Compose** — Real-time token-by-token streaming chat via SSE; cancellable; conversation history
-- **Workbench** — File and folder browser with offline caching (last 20 items), pull-to-refresh, swipe-to-delete, detail view
-
+- **Landing** — Branded entry screen with animated onboarding and navigation flows
+- **Auth** — Email/password authentication with JWT stored securely in Keychain (mock + real API ready)
+- **Compose** — ChatGPT-like streaming interface using AsyncSequence; cancellable responses; conversation lifecycle
+- **Workbench** — Hierarchical file & folder system (parentId-based) with offline caching per folder
+- **Offline Support** — Intelligent caching (UserDefaults) with graceful fallback and error states
+- **Mock API Support** — Fully functional app without backend using protocol-driven mock services
+- **Clean Architecture** — MVVM + dependency injection + testable services
 ---
+
+
+## Key Highlights
+
+- ✅ Protocol-oriented API layer (`APIServiceProtocol`)
+- ✅ Mock + Real API interchangeable via dependency injection
+- ✅ Streaming architecture using `AsyncThrowingStream`
+- ✅ Folder-based caching strategy (offline-first UX)
+- ✅ Secure token handling via Keychain
+- ✅ No third-party dependencies (pure Apple frameworks)
 
 ## Requirements
 
@@ -26,57 +40,18 @@ No external dependencies — zero third-party packages. The app uses only Apple 
 
 ## Setup & Build
 
-### 1. Create the Xcode Project
-
-Since this is submitted as source files, you need to create the Xcode project wrapper:
+### 1. Clone Repository
 
 ```bash
-# Open Xcode
-# File → New → Project
-# Choose: iOS → App
-# Product Name: MozartGo
-# Bundle Identifier: com.mozartgo.app
-# Interface: SwiftUI
-# Language: Swift
-# Uncheck: "Include Tests" (we add manually)
-```
+git clone https://github.com/your-username/MozartGo-iOS.git
+cd MozartGo-iOS
 
-### 2. Add Source Files
-
-Drag all folders into the Xcode project navigator, keeping the folder structure:
+### 2. Open in Xcode
 
 ```
-MozartGo/
-├── MozartGoApp.swift
-├── Models/
-├── Views/
-│   ├── Landing/
-│   ├── Auth/
-│   ├── Compose/
-│   ├── Workbench/
-│   └── Profile/
-├── ViewModels/
-├── Services/
-└── Extensions/
-```
+open MozartGo.xcodeproj
 
-### 3. Add Test Target
-
-```
-File → New → Target → Unit Testing Bundle
-Product Name: MozartGoTests
-Add MozartGoTests.swift to this target
-```
-
-### 4. Configure Signing
-
-```
-Project → Signing & Capabilities
-Team: [Your Apple Developer Team]
-Bundle Identifier: com.mozartgo.app
-```
-
-### 5. Build & Run
+### 3. Build & Run
 
 ```
 Product → Run  (⌘R)
@@ -120,7 +95,7 @@ Test coverage:
 ## Environment
 
 The app targets the Mozart dev environment:
-
+The app can run fully offline using the built-in Mock API service (default configuration).
 ```
 API Base URL: https://api-dev.mozart.la
 API Prefix:   /api/v1/
@@ -164,12 +139,13 @@ These are hardcoded in `APIService.swift`. To switch environments, change `baseU
 
 ## Architecture Summary
 
-**Pattern**: MVVM with SwiftUI-native state  
+**Pattern**: MVVM + Dependency Injection  
 **Concurrency**: Async/Await + Structured Concurrency (`@MainActor`)  
 **Networking**: `URLSession` with retries, timeouts, typed error mapping  
 **Streaming**: `URLSession.bytes` → `AsyncThrowingStream<String, Error>`  
 **Persistence**: `UserDefaults` JSON (offline cache) + Keychain (JWT)  
 **State**: `ObservableObject` + `@Published` + `@EnvironmentObject`  
+**API Layer**: Protocol-based (`APIServiceProtocol`) enabling mock and production implementations  
 
 See [iOS_ARCH.md](iOS_ARCH.md) for full architecture decisions.  
 See [MOBILE_NOTES.md](MOBILE_NOTES.md) for API design, caching, and future improvements.
