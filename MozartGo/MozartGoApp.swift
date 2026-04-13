@@ -1,17 +1,16 @@
-//
-//  MozartGoApp.swift
-//  MozartGo
-//
-//  Created by apexa Chovatiya on 09/04/26.
-//
-
 import SwiftUI
 
 @main
 struct MozartGoApp: App {
+    @StateObject private var authManager = AuthManager.shared
+    @StateObject private var networkMonitor = NetworkMonitor.shared
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
+                .environmentObject(authManager)
+                .environmentObject(networkMonitor)
+                .preferredColorScheme(.dark)
         }
     }
 }
