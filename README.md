@@ -45,12 +45,11 @@ No external dependencies — zero third-party packages. The app uses only Apple 
 ```bash
 git clone https://github.com/your-username/MozartGo-iOS.git
 cd MozartGo-iOS
-
+```
 ### 2. Open in Xcode
-
 ```
 open MozartGo.xcodeproj
-
+```
 ### 3. Build & Run
 
 ```
